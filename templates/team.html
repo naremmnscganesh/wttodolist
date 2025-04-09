@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Team Management{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-users me-2"></i>Team Members</h1>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Available Team Members</h6>
+        </div>
+        <div class="card-body">
+            {% if not team_members %}
+                <div class="text-center py-4">
+                    <i class="fas fa-users-slash fa-3x text-muted mb-3"></i>
+                    <h5>No team members found</h5>
+                    <p>There are no other users in the system yet</p>
+                </div>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for member in team_members %}
+                            <tr>
+                                <td>{{ member.username }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-user-plus me-1"></i> Assign Task
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

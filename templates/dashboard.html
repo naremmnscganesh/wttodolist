@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h1>
+    <div>
+        <a href="{{ url_for('add_task') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> New Task
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Stats Cards -->
+    <div class="col-md-3 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Total Tasks</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ tasks|length }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-tasks fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Completed</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{ tasks|selectattr('status', 'equalto', 'Completed')|list|length }}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Task List -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">Your Tasks</h6>
+        <div class="dropdown">
+            <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" 
+                    id="filterDropdown" data-bs-toggle="dropdown">
+                <i class="fas fa-filter me-1"></i>Filter
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="?filter=all">All Tasks</a></li>
+                <li><a class="dropdown-item" href="?filter=completed">Completed</a></li>
+                <li><a class="dropdown-item" href="?filter=pending">Pending</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        {% if not tasks %}
+            <div class="text-center py-4">
+                <i class="fas fa-tasks fa-3x text-muted mb-3"></i>
+                <h5>No tasks found</h5>
+                <p>Get started by creating your first task</p>
+                <a href="{{ url_for('add_task') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i> Add Task
+                </a>
+            </div>
+        {% else %}
+            <div class="list-group">
+                {% for task in tasks %}
+                <div class="list-group-item task-card 
+                    {% if task.status == 'Completed' %}completed{% endif %}
+                    {% if task.priority == 'High' %}high-priority{% endif %}
+                    {% if task.priority == 'Medium' %}medium-priority{% endif %}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="mb-1">{{ task.title }}</h5>
+                                <div>
+                                    <span class="priority-badge badge bg-{% if task.priority == 'High' %}danger{% elif task.priority == 'Medium' %}warning{% else %}primary{% endif %}">
+                                        {{ task.priority }}
+                                    </span>
+                                    <span class="status-badge badge bg-{% if task.status == 'Completed' %}success{% else %}secondary{% endif %}">
+                                        {{ task.status }}
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="mb-1">{{ task.description }}</p>
+                            {% if task.assigned_to %}
+                            <small class="text-muted">
+                                <i class="fas fa-user-tag me-1"></i>Assigned to: {{ task.assigned_to }}
+                            </small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mt-2 d-flex justify-content-end">
+                        {% if task.status != 'Completed' %}
+                        <a href="{{ url_for('complete_task', task_id=task._id) }}" 
+                           class="btn btn-sm btn-success me-2">
+                            <i class="fas fa-check me-1"></i>Complete
+                        </a>
+                        {% endif %}
+                        <a href="{{ url_for('delete_task', task_id=task._id) }}" 
+                           class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash me-1"></i>Delete
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

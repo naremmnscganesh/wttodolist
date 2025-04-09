@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{% if task %}Edit{% else %}Add{% endif %} Task{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-header">
+        <i class="fas fa-{% if task %}edit{% else %}plus-circle{% endif %}"></i>
+        <h2>{% if task %}Edit{% else %}Add New{% endif %} Task</h2>
+    </div>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" 
+                   value="{{ task.title if task }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" 
+                      rows="3">{{ task.description if task }}</textarea>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="priority" class="form-label">Priority</label>
+                <select class="form-select" id="priority" name="priority" required>
+                    <option value="Low" {% if task and task.priority == 'Low' %}selected{% endif %}>Low</option>
+                    <option value="Medium" {% if task and task.priority == 'Medium' %}selected{% endif %}>Medium</option>
+                    <option value="High" {% if task and task.priority == 'High' %}selected{% endif %}>High</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="assigned_to" class="form-label">Assign To</label>
+                <input type="text" class="form-control" id="assigned_to" name="assigned_to"
+                       value="{{ task.assigned_to if task }}" placeholder="Team member username">
+            </div>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i> Save Task
+            </button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-times me-1"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+:root {
+    --primary-color: #4e73df;
+    --secondary-color: #f8f9fc;
+    --success-color: #1cc88a;
+    --warning-color: #f6c23e;
+    --danger-color: #e74a3b;
+}
+
+body {
+    background-color: #f8f9fc;
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.task-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--primary-color);
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-card.completed {
+    border-left-color: var(--success-color);
+    opacity: 0.8;
+}
+
+.task-card.high-priority {
+    border-left-color: var(--danger-color);
+}
+
+.task-card.medium-priority {
+    border-left-color: var(--warning-color);
+}
+
+.priority-badge {
+    font-size: 0.75rem;
+    padding: 0.35em 0.65em;
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    padding: 0.35em 0.65em;
+}
+
+/* Auth Pages */
+.auth-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
